@@ -9,7 +9,6 @@ class User(AbstractUser):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    followers = models.ManyToManyField('self', symmetrical=False, related_name='following')
     website = models.URLField(blank=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
 

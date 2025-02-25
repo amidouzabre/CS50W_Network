@@ -12,3 +12,10 @@ class Profile(models.Model):
     followers = models.ManyToManyField('self', symmetrical=False, related_name='following')
     website = models.URLField(blank=True)
     profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
+
+
+
+class Post(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)

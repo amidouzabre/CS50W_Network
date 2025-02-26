@@ -34,7 +34,13 @@
                     <img src="{{ post.user.user_img.url }}" class="profile-img me-2 mr-2" alt="Profile">
                     
                     <div class="d-flex flex-column flex-grow-1">
-                        <div class="mb-0">{{post.user.username|upper}} <span class="text-muted"> {{post.user.email}}· {{post.created_at|timesince }} ago</span></div>
+                        <div class="mb-0">
+                            <a href="{% url 'profile' post.user.username %}">{{post.user.username|upper}} </a>
+                            <span class="text-muted"> 
+                                {{post.user.email}}· 
+                                {{post.created_at|timesince }} ago
+                            </span>
+                        </div>
                         <p>
                             {{post.content}}
                         </p>

@@ -78,9 +78,9 @@ def post_new(request):
 
 
 def profile(request, username):
-    user = User.objects.get(username=username)
-    posts = Post.objects.filter(user=user)
+    profile_user = User.objects.get(username=username)
+    posts = Post.objects.filter(user=profile_user).order_by('-created_at')
     return render(request, "network/profile.html", context={
-        'user': user,
+        'profile_user': profile_user,
         'posts': posts
     })

@@ -9,13 +9,15 @@
                 <div class="row">
                     <!-- Profile Picture -->
                     <div class="col-md-3 text-center">
-                        <img src="{{  user.user_img.url }}" class="rounded-circle profile-img-lg" alt="Profile Picture">
+                        <img src="{{  profile_user.user_img.url }}" class="rounded-circle profile-img-lg" alt="Profile Picture">
                     </div>
                     <!-- Profile Info -->
                     <div class="col-md-9">
-                        <h4 class="mb-0">John Doe</h4>
-                        <p class="text-muted">@johndoe</p>
-                        <p>Web Developer | Coffee Lover | Code Enthusiast</p>
+                        <h4 class="mb-0">{{profile_user.username}}</h4>
+                        <p class="text-muted">{{profile_user.email}}</p>
+                        <p>
+                            {{profile_user.bio}}
+                        </p>
                         <div class="d-flex mb-2">
                             <div class="mr-4">
                                 <strong>1,234</strong> Following
@@ -24,7 +26,14 @@
                                 <strong>5,678</strong> Followers
                             </div>
                         </div>
-                        <button class="btn btn-primary">Edit Profile</button>
+                        <div class="d-flex justify-content-between w-100">
+                            
+                            {% if user == profile_user %}
+                                <button class="btn btn-primary">Edit Profile</button>
+                            {% else %}
+                                <button class="btn btn-dark">Follow</button>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -32,6 +41,43 @@
     </div>
 </div>
 
+<div class="row">
+
+    <div class="col-12">
+        <h4 class="mt-4">Posts</h4>
+    <div class="posts">
+
+        {% for post in posts%}
+        <div class="post-box">
+            <div class="d-flex">
+                <img src="{{ post.user.user_img.url }}" class="profile-img me-2 mr-2" alt="Profile">
+                
+                <div class="d-flex flex-column flex-grow-1">
+                    <div class="mb-0">
+                        <a href="{% url 'profile' post.user.username %}">{{post.user.username|upper}} </a>
+                        <span class="text-muted"> 
+                            {{post.user.email}}· 
+                            {{post.created_at|timesince }} ago
+                        </span>
+                    </div>
+                    <p>
+                        {{post.content}}
+                    </p>
+                    
+                    <div class="d-flex justify-content-around w-100">
+                        <a href="#" class="far fa-heart"><span class="pl-2">{{ post.likes.count }}</span></a>
+                        <a href="#" class="far fa-comment"><span class="pl-2">0</span></a>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+    </div>
+</div>
 
 
 {% endblock %}

@@ -5,7 +5,7 @@
     {% if user.is_authenticated %}
 
         <!-- Post Composer -->
-        <div class="post-box ">
+        <div class="post-box compose">
             <div class="d-flex">
                 <img src="{{  user.user_img.url }}" class="profile-img me-2 mr-2" alt="Profile">
                 <div class="flex-grow-1">
@@ -20,6 +20,35 @@
                 </div>
             </div>
         </div>
+
+        <div class="posts">
+
+            {% for i in numbers%}
+            <div class="post-box">
+                <div class="d-flex">
+                    <img src="{{ user.user_img.url }}" class="profile-img me-2 mr-2" alt="Profile">
+                    
+                    <div class="d-flex flex-column">
+                        <h6 class="mb-0">User Name <span class="text-muted">@username · 1h</span></h6>
+                        <p>
+                            This is a sample tweet content. #Twitter #Clone
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Perspiciatis voluptates quisquam temporibus nihil corporis? Temporibus ipsum animi voluptates rem commodi voluptas minima asperiores aspernatur eum debitis, quisquam pariatur vel nemo!
+                        </p>
+                        
+                        <div class="d-flex justify-content-around w-100">
+                            <i class="far fa-comment"></i>
+                            <i class="far fa-heart"></i>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+
     {% endif %}
 
 {% endblock %}

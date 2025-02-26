@@ -1,9 +1,18 @@
+.body {
+    padding-top: 72px;
+}
+
 .post-box {
     border: 1px solid #eee;
     padding: 1rem;
     margin-bottom: 1rem;
+    
+}
+
+.post-box.compose {
     background-color: rgb(221, 221, 221);
 }
+
 
 .profile-img {
     width: 50px;

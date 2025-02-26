@@ -8,7 +8,7 @@ from .models import User
 
 
 def index(request):
-    return render(request, "network/index.html")
+    return render(request, "network/index.html", context={'numbers':range(10)})
 
 
 def login_view(request):

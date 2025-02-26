@@ -66,7 +66,7 @@ def register(request):
         return render(request, "network/register.html")
 
 
-def post(request):
+def post_new(request):
     if request.method == "POST":
         content = request.POST["content"]
         post = Post(user=request.user, content=content)

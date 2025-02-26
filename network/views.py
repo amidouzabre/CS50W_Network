@@ -75,3 +75,12 @@ def post_new(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/index.html")
+
+
+def profile(request, username):
+    user = User.objects.get(username=username)
+    posts = Post.objects.filter(user=user)
+    return render(request, "network/profile.html", context={
+        'user': user,
+        'posts': posts
+    })

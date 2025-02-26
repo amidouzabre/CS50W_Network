@@ -4,11 +4,14 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User
+from .models import User, Post
 
 
 def index(request):
-    return render(request, "network/index.html", context={'numbers':range(10)})
+    posts = Post.objects.all().order_by('-created_at')
+    return render(request, "network/index.html", context={
+        'posts':posts
+    })
 
 
 def login_view(request):
@@ -61,3 +64,14 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+
+
+def post(request):
+    if request.method == "POST":
+        content = request.POST["content"]
+        post = Post(user=request.user, content=content)
+        post.save()
+        print(post)
+        return HttpResponseRedirect(reverse("index"))
+    else:
+        return render(request, "network/index.html")

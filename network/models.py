@@ -4,7 +4,7 @@ from django.db import models
 
 class User(AbstractUser):
     bio = models.TextField(blank=True)
-    user_img = models.ImageField(upload_to='user_images/', default="blank_user_img.png")
+    user_img = models.ImageField(upload_to='user_images/', default="user_images/blank_user_img.png")
 
 
 class Profile(models.Model):
@@ -22,7 +22,7 @@ class Post(models.Model):
 
 class LikePost(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes')
     created_at = models.DateTimeField(auto_now_add=True)
 
 

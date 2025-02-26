@@ -1,5 +1,20 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
-    TODO
+    <!-- Tweet Composer -->
+    <div class="tweet-box">
+        <div class="d-flex">
+            <img src="{MEDIA_URL}/user_images/11.jpeg" class="profile-img me-2" alt="Profile">
+            <div class="flex-grow-1">
+                <textarea class="form-control border-0" placeholder="What's happening?"></textarea>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <div>
+                        <i class="far fa-image text-primary"></i>
+                        <i class="far fa-smile text-primary ms-3"></i>
+                    </div>
+                    <button class="btn btn-primary rounded-pill">Post</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -112,3 +112,11 @@ def follow_or_unfollow(request, username):
         follow.save()
     return HttpResponseRedirect(reverse("profile", args=[username]))
     
+
+def following(request):
+    following = Follow.objects.filter(follower=request.user)
+    posts = Post.objects.filter(user__in=[f.following for f in following]).order_by('-created_at')
+    return render(request, "network/following.html", context={
+        'following': following,
+        'posts': posts
+    })

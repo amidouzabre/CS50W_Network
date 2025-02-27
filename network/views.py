@@ -88,3 +88,15 @@ def profile(request, username):
         'posts': posts,
         'is_following': is_following
     })
+
+
+def follow_or_unfollow(request, username):
+    profile_user = User.objects.get(username=username)
+    if request.method == "POST":
+        if request.POST["follow"] == "Follow":
+            request.user.follow(profile_user)
+        else:
+            request.user.unfollow(profile_user)
+        return HttpResponseRedirect(reverse("profile", args=[username]))
+    else:
+        return HttpResponseRedirect(reverse("profile", args=[username]))

@@ -10,17 +10,6 @@ class User(AbstractUser):
         return self.followers.filter(follower=user).exists()
 
 
-    def follow(self, user):
-        if not self.is_followed_by(user):
-            Follow.objects.create(follower=user, following=self)
-            return True
-        return False
-    
-    def unfollow(self, user):
-        if self.is_followed_by(user):
-            Follow.objects.get(follower=user, following=self).delete()
-            return True
-        return False
 
 
 class Profile(models.Model):

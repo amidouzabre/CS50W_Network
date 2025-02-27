@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User, Post
+from .models import User, Post, Follow
 
 
 def index(request):
@@ -92,11 +92,18 @@ def profile(request, username):
 
 def follow_or_unfollow(request, username):
     profile_user = User.objects.get(username=username)
-    if request.method == "POST":
-        if request.POST["follow"] == "Follow":
-            request.user.follow(profile_user)
-        else:
-            request.user.unfollow(profile_user)
-        return HttpResponseRedirect(reverse("profile", args=[username]))
-    else:
-        return HttpResponseRedirect(reverse("profile", args=[username]))
+    is_following = profile_user.is_followed_by(request.user)
+
+    print("is_following", is_following)
+    print("profile_user", profile_user)
+
+    if(is_following):
+        print("unfollow request")
+        unfollow = Follow.objects.get(follower=request.user, following=profile_user)    
+        unfollow.delete()
+    else:    
+        print("follow request")
+        follow = Follow.objects.create(follower=request.user, following=profile_user)
+        follow.save()
+    return HttpResponseRedirect(reverse("profile", args=[username]))
+    

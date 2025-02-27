@@ -6,6 +6,9 @@ class User(AbstractUser):
     bio = models.TextField(blank=True)
     user_img = models.ImageField(upload_to='user_images/', default="user_images/blank_user_img.png")
 
+    def is_followed_by(self, user):
+        return self.followers.filter(follower=user).exists()
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')

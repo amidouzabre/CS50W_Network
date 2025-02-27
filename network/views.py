@@ -80,7 +80,11 @@ def post_new(request):
 def profile(request, username):
     profile_user = User.objects.get(username=username)
     posts = Post.objects.filter(user=profile_user).order_by('-created_at')
+
+    is_following = profile_user.is_followed_by(request.user)
+
     return render(request, "network/profile.html", context={
         'profile_user': profile_user,
-        'posts': posts
+        'posts': posts,
+        'is_following': is_following
     })

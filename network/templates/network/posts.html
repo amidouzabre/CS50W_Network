@@ -1,0 +1,73 @@
+{% load static %}
+
+{% block posts%}
+    <div class="posts">
+
+        {% for post in posts%}
+        <div class="post-box">
+            <div class="d-flex">
+                <img src="{{ post.user.user_img.url }}" class="profile-img me-2 mr-2" alt="Profile">
+                
+                <div class="d-flex flex-column flex-grow-1">
+                    <div class="mb-0">
+                        <a href="{% url 'profile' post.user.username %}">{{post.user.username|upper}} </a>
+                        <span class="text-muted"> 
+                            {{post.user.email}}· 
+                            {{post.created_at|timesince }} ago
+                        </span>
+                    </div>
+                    
+                    <p  
+                        id="post-{{ post.id }}" 
+                        data-post-id="{{ post.id }}" 
+                        {% if user.is_authenticated and user.username == post.user.username %}
+                            data-post-editable="{{ user.username }}"
+                        {% endif %}
+                        >
+                        {{post.content}}
+                    </p>
+                    
+                    <form id="post-form-{{ post.id }}" action="{% url 'post_edit' post.id %}" method="post" hidden>
+                        {% csrf_token %}
+                        <textarea name="content" class="form-control border-0" required>{{ post.content }}</textarea>
+                        <div class="d-flex justify-content-end align-items-end mt-3">
+                            <input type="button" class="btn btn-secondary rounded-pill me-2" value="Cancel"/>
+                            <input type="submit" class="btn btn-primary rounded-pill" value="Update"/>
+                        </div>
+                    </form>
+                    
+                    <div class="d-flex justify-content-around w-100">
+                        <a href="#" class="far fa-heart"><span class="pl-2">{{ post.likes.count }}</span></a>
+                        <a href="#" class="far fa-comment"><span class="pl-2">0</span></a>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+        {% endfor %}
+
+        <nav aria-label="Page navigation example" class="d-flex justify-content-center">
+            <ul class="pagination">
+                {% if posts.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page=1">&laquo; First</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ posts.previous_page_number }}">Previous</a></li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">&laquo; First</span></li>
+                    <li class="page-item disabled"><span class="page-link">Previous</span></li>
+                {% endif %}
+        
+                <li class="page-item active"><span class="page-link">Page {{ posts.number }} of {{ posts.paginator.num_pages }}</span></li>
+        
+                {% if posts.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ posts.next_page_number }}">Next</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ posts.paginator.num_pages }}">Last &raquo;</a></li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">Next</span></li>
+                    <li class="page-item disabled"><span class="page-link">Last &raquo;</span></li>
+                {% endif %}
+            </ul>
+        </nav>
+
+    </div>
+{% endblock %}

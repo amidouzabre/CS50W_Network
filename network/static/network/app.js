@@ -68,10 +68,12 @@ if(authenticatedUser){
                 } else {
                     alert('An error occurred while updating the post.');
                 }
+                
 
 
             } catch (error) {
                 console.log(error);
+                return null;
             }
         });
     });
@@ -89,6 +91,6 @@ async function fetchJSON(url, options = {}) {
     if (r.ok) {
       return r.json()
     }
-  
+    
     throw new Error("Impossble to get json", {cause: r})
   }

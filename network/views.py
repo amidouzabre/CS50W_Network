@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
@@ -66,6 +67,8 @@ def register(request):
         return render(request, "network/register.html")
 
 
+
+@login_required
 def post_new(request):
     if request.method == "POST":
         content = request.POST["content"]
@@ -77,11 +80,12 @@ def post_new(request):
         return render(request, "network/index.html")
 
 
+
 def profile(request, username):
     profile_user = User.objects.get(username=username)
     posts = Post.objects.filter(user=profile_user).order_by('-created_at')
 
-    is_following = profile_user.is_followed_by(request.user)
+    is_following = profile_user.is_followed_by(request.user) if request.user.is_authenticated else False
 
     return render(request, "network/profile.html", context={
         'profile_user': profile_user,
@@ -90,6 +94,7 @@ def profile(request, username):
     })
 
 
+@login_required
 def follow_or_unfollow(request, username):
     profile_user = User.objects.get(username=username)
     is_following = profile_user.is_followed_by(request.user)

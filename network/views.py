@@ -11,7 +11,7 @@ from .models import User, Post, Follow
 
 def index(request):
     posts_list = Post.objects.all().order_by('-created_at')
-    paginator = Paginator(posts_list, 1)
+    paginator = Paginator(posts_list, 10)
     page_number = request.GET.get('page')
     posts = paginator.get_page(page_number)
     return render(request, "network/index.html", context={
@@ -90,7 +90,7 @@ def profile(request, username):
     posts_list = Post.objects.filter(user=profile_user).order_by('-created_at')
 
 
-    paginator = Paginator(posts_list, 1)
+    paginator = Paginator(posts_list, 10)
     page_number = request.GET.get('page')
     posts = paginator.get_page(page_number)
 
@@ -131,7 +131,7 @@ def following(request):
     posts_list = Post.objects.filter(user__in=[f.following for f in following]).order_by('-created_at')
 
 
-    paginator = Paginator(posts_list, 1)
+    paginator = Paginator(posts_list, 10)
     page_number = request.GET.get('page')
     posts = paginator.get_page(page_number)
 

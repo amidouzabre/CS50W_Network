@@ -65,9 +65,18 @@
                             {{post.created_at|timesince }} ago
                         </span>
                     </div>
-                    <p>
+
+                    <p  id="post-{{ post.id }}" data-post-id="{{ post.id }}">
                         {{post.content}}
                     </p>
+                    
+                    <form id="post-form-{{ post.id }}" action="{% url 'post_add' %}" method="post" hidden>
+                        {% csrf_token %}
+                        <textarea name="content" class="form-control border-0" required>{{ post.content }}</textarea>
+                        <div class="d-flex justify-content-end align-items-end mt-3">
+                            <input type="submit" class="btn btn-primary rounded-pill" value="Update"/>
+                        </div>
+                    </form>
                     
                     <div class="d-flex justify-content-around w-100">
                         <a href="#" class="far fa-heart"><span class="pl-2">{{ post.likes.count }}</span></a>

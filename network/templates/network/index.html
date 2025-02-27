@@ -4,7 +4,7 @@
 
         {% if user.is_authenticated %}
         <!-- Post Composer -->
-        <div class="post-box compose">
+        <div class="post-box compose" data-user-authenticated="{{ user.username }}">
             <div class="d-flex">
                 <img src="{{  user.user_img.url }}" class="profile-img me-2 mr-2" alt="Profile">
                 <div class="flex-grow-1">
@@ -41,9 +41,19 @@
                                 {{post.created_at|timesince }} ago
                             </span>
                         </div>
-                        <p>
+                        
+                        <p  id="post-{{ post.id }}" data-post-id="{{ post.id }}" data-username="{{ post.user.username }}">
                             {{post.content}}
                         </p>
+                        
+                        <form id="post-form-{{ post.id }}" action="{% url 'post_edit' post.id %}" method="post" hidden>
+                            {% csrf_token %}
+                            <textarea name="content" class="form-control border-0" required>{{ post.content }}</textarea>
+                            <div class="d-flex justify-content-end align-items-end mt-3">
+                                <input type="button" class="btn btn-secondary rounded-pill me-2" value="Cancel"/>
+                                <input type="submit" class="btn btn-primary rounded-pill" value="Update"/>
+                            </div>
+                        </form>
                         
                         <div class="d-flex justify-content-around w-100">
                             <a href="#" class="far fa-heart"><span class="pl-2">{{ post.likes.count }}</span></a>

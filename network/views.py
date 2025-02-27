@@ -1,10 +1,11 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.core.paginator import Paginator
+import json
 
 from .models import User, Post, Follow
 
@@ -73,15 +74,30 @@ def register(request):
 
 
 @login_required
-def post_new(request):
+def post_add(request):
     if request.method == "POST":
         content = request.POST["content"]
         post = Post(user=request.user, content=content)
         post.save()
-        print(post)
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/index.html")
+
+
+@login_required
+def post_edit(request, post_id):
+    post = Post.objects.get(id=post_id)
+
+    print(post.id)
+
+    
+    if request.method == "POST":
+        data = json.loads(request.body) # Parse request body as JSON
+        post.content = data.get("content")  # Get content from parsed JSON
+        post.save()  # Save the updated post
+        return JsonResponse({"content": post.content})  # Return updated content as JSON
+
+    return HttpResponseRedirect(reverse("index"))
 
 
 

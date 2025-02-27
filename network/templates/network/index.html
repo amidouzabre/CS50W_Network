@@ -3,6 +3,9 @@
 {% block body %}
 
         {% if user.is_authenticated %}
+
+        
+
         <!-- Post Composer -->
         <div class="post-box compose" data-user-authenticated="{{ user.username }}">
             <div class="d-flex">
@@ -26,6 +29,7 @@
         </div>
         {% endif %}
 
+        <!-- Posts 
         <div class="posts">
 
             {% for post in posts%}
@@ -89,7 +93,10 @@
             </nav>
 
         </div>
+        -->
 
+
+        {% include "network/posts.html" %}
     
 
 {% endblock %}

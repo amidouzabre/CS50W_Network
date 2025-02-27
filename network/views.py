@@ -4,12 +4,16 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.core.paginator import Paginator
 
 from .models import User, Post, Follow
 
 
 def index(request):
-    posts = Post.objects.all().order_by('-created_at')
+    posts_list = Post.objects.all().order_by('-created_at')
+    paginator = Paginator(posts_list, 1)
+    page_number = request.GET.get('page')
+    posts = paginator.get_page(page_number)
     return render(request, "network/index.html", context={
         'posts':posts
     })
@@ -83,7 +87,14 @@ def post_new(request):
 
 def profile(request, username):
     profile_user = User.objects.get(username=username)
-    posts = Post.objects.filter(user=profile_user).order_by('-created_at')
+    posts_list = Post.objects.filter(user=profile_user).order_by('-created_at')
+
+
+    paginator = Paginator(posts_list, 1)
+    page_number = request.GET.get('page')
+    posts = paginator.get_page(page_number)
+
+
 
     is_following = profile_user.is_followed_by(request.user) if request.user.is_authenticated else False
 
@@ -113,10 +124,20 @@ def follow_or_unfollow(request, username):
     return HttpResponseRedirect(reverse("profile", args=[username]))
     
 
+
+@login_required
 def following(request):
     following = Follow.objects.filter(follower=request.user)
-    posts = Post.objects.filter(user__in=[f.following for f in following]).order_by('-created_at')
+    posts_list = Post.objects.filter(user__in=[f.following for f in following]).order_by('-created_at')
+
+
+    paginator = Paginator(posts_list, 1)
+    page_number = request.GET.get('page')
+    posts = paginator.get_page(page_number)
+
+    
     return render(request, "network/following.html", context={
         'following': following,
         'posts': posts
     })
+    

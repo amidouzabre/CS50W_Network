@@ -7,14 +7,15 @@ from django.urls import reverse
 from django.core.paginator import Paginator
 import json
 
-from .models import User, Post, Follow
+from .models import User, Post, Follow, LikePost
 
 
 def index(request):
     posts_list = Post.objects.all().order_by('-created_at')
 
-    for post in posts_list:
-        post.user_liked = post.likes.filter(user=request.user).exists()
+    if request.user.is_authenticated:
+        for post in posts_list:
+            post.user_liked = post.likes.filter(user=request.user).exists()
 
     paginator = Paginator(posts_list, 10)
     page_number = request.GET.get('page')
@@ -161,3 +162,19 @@ def following(request):
         'posts': posts
     })
     
+
+@login_required
+def like_or_dislike(request, post_id):
+    post = Post.objects.get(id=post_id)
+    user_liked = post.likes.filter(user=request.user).exists()
+    
+    if user_liked:
+        like = LikePost.objects.filter(user=request.user, post=post)
+        like.delete()
+        action = "disliked"
+    else:
+        like = LikePost.objects.create(user=request.user, post=post)
+        like.save()
+        action = "liked"
+
+    return JsonResponse({"content": action})

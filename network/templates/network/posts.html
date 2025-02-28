@@ -42,15 +42,15 @@
                             data-post-id="{{ post.id }}"
                             {% if post.user_liked %}
                                 data-post-liked=True
-                                class="like fa-solid fa-heart"
+                                class="like fas fa-heart"
                             {% else %}
                                 class="like far fa-heart"
                                 data-post-liked=False
                             {% endif %}
                         >
-                            <span class="pl-2">{{ post.likes.count }}</span>
+                            <span class="pl-2 likes-count">{{ post.likes.count }}</span>
                     </i>
-                        <a href="#" class="comment far fa-comment"><span class="pl-2">0</span></a>
+                        <a href="{% url 'like_post' post.id %}" class="comment far fa-comment"><span class="pl-2">0</span></a>
                     </div>
                     
                 </div>

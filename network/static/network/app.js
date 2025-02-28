@@ -80,7 +80,28 @@ if(authenticatedUser){
         btn.addEventListener('click', function (event){
             event.preventDefault;
             const postId = this.getAttribute('data-post-id');
-            console.log(postId)
+
+            fetchJSON(`/post/like/${postId}`, {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'}
+            })
+            .then(result => {
+                const likesCount = this.querySelector('.likes-count');
+
+                if (result.content === "liked") {
+                    likesCount.textContent = parseInt(likesCount.textContent) + 1;
+                    this.classList.add('fas');
+                    this.classList.remove('far');
+                } else if (result.content === "disliked") {
+                    likesCount.textContent = parseInt(likesCount.textContent) - 1;
+                    this.classList.add('far');
+                    this.classList.remove('fas');
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                return null});
+
         })
     })
 
@@ -97,10 +118,12 @@ if(authenticatedUser){
  */
 async function fetchJSON(url, options = {}) {
     const headers = {Accept: 'application/json', ...options.headers}
-    const r = await fetch(url, {...options, headers})
-    if (r.ok) {
-      return r.json()
-    }
-    
-    throw new Error("Impossble to get json", {cause: r})
-  }
+    return fetch(url, {...options, headers}).then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    });
+}
+
+

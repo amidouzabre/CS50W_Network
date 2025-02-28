@@ -44,18 +44,18 @@ if(authenticatedUser){
             event.preventDefault();
             const content = form.querySelector('textarea').value;
 
-            try {
-                const result =  fetchJSON(`/post/edit/${post.getAttribute('data-post-id')}`, {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        content: content
-                    }),
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
-                    }
-                });
-                
+
+            fetchJSON(`/post/edit/${post.getAttribute('data-post-id')}`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    content: content
+                }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            })
+            .then(result => {
                 if (result) {
                     post.textContent = content;
                     post.hidden = false;
@@ -63,13 +63,13 @@ if(authenticatedUser){
                 } else {
                     alert('An error occurred while updating the post.');
                 }
-                
-
-
-            } catch (error) {
+            })
+            .catch(error => {
                 console.log(error);
                 return null;
             }
+            );
+
         });
     });
 

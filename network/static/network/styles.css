@@ -1,5 +1,5 @@
 .body {
-    padding-top: 72px;
+    padding-top: 80px;
 }
 
 .post-box {
@@ -26,7 +26,13 @@
     color:red
 }
 
+.post-box i {
+    transition: transform 0.2s ease-in-out;
+}
 
+.post-box i:hover {
+    transform: scale(1.2);
+}
 
 
 .profile-img {

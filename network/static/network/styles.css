@@ -18,9 +18,15 @@
     color: black;
 }
 
-.post-box a:hover {
+.post-box i {
+    cursor: pointer;
+}
+
+.post-box a:hover, i:hover {
     color:red
 }
+
+
 
 
 .profile-img {

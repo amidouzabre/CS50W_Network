@@ -77,7 +77,8 @@ if(authenticatedUser){
     // Like or Dislike
     
     post_like_btns.forEach(btn => {
-        btn.addEventListener('click', function (){
+        btn.addEventListener('click', function (event){
+            event.preventDefault;
             const postId = this.getAttribute('data-post-id');
             console.log(postId)
         })

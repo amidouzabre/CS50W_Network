@@ -106,6 +106,44 @@ if(authenticatedUser){
     })
 
 
+    // Follow or Unfollow
+    const followBtn = document.querySelector('.follow');
+    followBtn.addEventListener('click', function(event){
+        event.preventDefault();
+        const userId = this.getAttribute('data-user-id');
+
+        console.log(userId)
+        
+        fetchJSON(`follow/${userId}`, {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'}
+        })
+        .then(result => {
+
+            const followersCount = document.querySelector('.followers');
+
+            if (result.content === "followed") {
+                followersCount.textContent = parseInt(followersCount.textContent) + 1;
+                this.textContent = 'Unfollow';
+                this.classList.remove('btn-dark');
+                this.classList.add('btn-danger');
+            } else if (result.content === "unfollowed") {
+                followersCount.textContent = parseInt(followersCount.textContent) - 1;
+                this.textContent = 'Follow';
+                this.classList.remove('btn-danger');
+                this.classList.add('btn-dark');
+            }
+        })
+        .catch(error => {
+            console.log(error);
+            return null
+        });
+        
+
+
+    });
+
+
 
 
 };

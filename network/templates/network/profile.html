@@ -20,10 +20,10 @@
                         </p>
                         <div class="d-flex mb-2">
                             <div class="mr-4">
-                                <strong>{{ profile_user.following.count }}</strong> Following
+                                <strong class="followings">{{ profile_user.following.count }}</strong> Following
                             </div>
                             <div>
-                                <strong>{{ profile_user.followers.count }}</strong> Followers
+                                <strong class="followers">{{ profile_user.followers.count }}</strong> Followers
                             </div>
                         </div>
                         <div class="d-flex justify-content-between w-100">
@@ -32,9 +32,9 @@
                                     <button class="btn btn-primary">Edit Profile</button>
                                 {% else %}
                                     {% if is_following %}
-                                        <a href="{% url 'follow' profile_user.username %}" class="btn btn-dark">Unfollow</a>
+                                        <button  data-user-id="{{ profile_user.id }}" class="btn btn-danger follow">Unfollow</button>
                                     {% else %}
-                                        <a href="{% url 'follow' profile_user.username %}" class="btn btn-dark">Follow</a>
+                                        <button  data-user-id="{{ profile_user.id }}" class="btn btn-dark follow">Follow</button>
                                     {% endif %}
                                 {% endif %}
                             {% endif %}

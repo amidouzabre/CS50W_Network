@@ -127,22 +127,23 @@ def profile(request, username):
 
 
 @login_required
-def follow_or_unfollow(request, username):
-    profile_user = User.objects.get(username=username)
+def follow_or_unfollow(request, user_id):
+    profile_user = User.objects.get(id=user_id)
     is_following = profile_user.is_followed_by(request.user)
 
-    print("is_following", is_following)
-    print("profile_user", profile_user)
-
+    print(user_id)
+    
     if(is_following):
-        print("unfollow request")
         unfollow = Follow.objects.get(follower=request.user, following=profile_user)    
         unfollow.delete()
+        action = "unfollowed"
     else:    
-        print("follow request")
         follow = Follow.objects.create(follower=request.user, following=profile_user)
         follow.save()
-    return HttpResponseRedirect(reverse("profile", args=[username]))
+        action = "followed"
+
+    return JsonResponse({"content": action})
+    #return HttpResponseRedirect(reverse("profile", args=[username]))
     
 
 

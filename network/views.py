@@ -88,9 +88,9 @@ def post_add(request):
 def post_edit(request, post_id):
     post = Post.objects.get(id=post_id)
 
-    print(post.id)
+    if request.user != post.user:
+        return HttpResponseRedirect(reverse("index"))
 
-    
     if request.method == "POST":
         data = json.loads(request.body) # Parse request body as JSON
         post.content = data.get("content")  # Get content from parsed JSON

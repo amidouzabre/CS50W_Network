@@ -1,4 +1,3 @@
-//posts = document.querySelectorAll('.post-box p[data-post-id]');
 posts_editables = document.querySelectorAll('.post-box p[data-post-editable]');
 
 
@@ -21,7 +20,7 @@ if(authenticatedUser){
         post.addEventListener('click', function() {
             const postId = this.getAttribute('data-post-id');
 
-            const postForm = document.getElementById(`post-form-${postId}`);
+            const postForm = document.querySelector(`#post-form-${postId}`);
             postForm.hidden = !postForm.hidden;
             post.hidden = !post.hidden;
 

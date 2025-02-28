@@ -30,7 +30,7 @@
                     <form id="post-form-{{ post.id }}" action="{% url 'post_edit' post.id %}" method="post" hidden>
                         {% csrf_token %}
                         <textarea name="content" class="form-control border-0" required>{{ post.content }}</textarea>
-                        <div class="d-flex justify-content-end align-items-end mt-3">
+                        <div class="d-flex justify-content-end align-items-end mt-3" style="gap: 10px">
                             <input type="button" class="btn btn-secondary rounded-pill me-2" value="Cancel"/>
                             <input type="submit" class="btn btn-primary rounded-pill" value="Update"/>
                         </div>

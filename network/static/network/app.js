@@ -1,21 +1,17 @@
+// Get editables posts
 posts_editables = document.querySelectorAll('.post-box p[data-post-editable]');
+
+// Get like
+post_like_btns = document.querySelectorAll('.like');
+
 
 
 // Get the authenticated user
-
 const authenticatedUser = document.querySelector('#user-authenticated');
 
 if(authenticatedUser){
    
-    /*
-    const authenticatedUsername  = authenticatedUser.getAttribute('data-user-authenticated');
-
-    // Filter the elements based on the data-username attribute
-    const userPosts = Array.from(posts).filter((post) => {
-        return post.getAttribute('data-username') === authenticatedUsername;
-    });
-    */
-
+    // Edit post
     posts_editables.forEach(post => {
         post.addEventListener('click', function() {
             const postId = this.getAttribute('data-post-id');
@@ -76,6 +72,20 @@ if(authenticatedUser){
             }
         });
     });
+
+
+    // Like or Dislike
+    
+    post_like_btns.forEach(btn => {
+        btn.addEventListener('click', function (){
+            const postId = this.getAttribute('data-post-id');
+            console.log(postId)
+        })
+    })
+
+
+
+
 };
 
 /**

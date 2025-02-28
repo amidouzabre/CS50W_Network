@@ -37,8 +37,20 @@
                     </form>
                     
                     <div class="d-flex justify-content-around w-100">
-                        <a href="#" class="far fa-heart"><span class="pl-2">{{ post.likes.count }}</span></a>
-                        <a href="#" class="far fa-comment"><span class="pl-2">0</span></a>
+                        <a 
+                            href="#" 
+                            data-post-id="{{ post.id }}"
+                            {% if post.user_liked %}
+                                data-post-liked=True
+                                class="like fa-solid fa-heart"
+                            {% else %}
+                                class="like far fa-heart"
+                                data-post-liked=False
+                            {% endif %}
+                        >
+                            <span class="pl-2">{{ post.likes.count }}</span>
+                        </a>
+                        <a href="#" class="comment far fa-comment"><span class="pl-2">0</span></a>
                     </div>
                     
                 </div>

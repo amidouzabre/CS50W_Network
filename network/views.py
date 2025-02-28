@@ -12,6 +12,10 @@ from .models import User, Post, Follow
 
 def index(request):
     posts_list = Post.objects.all().order_by('-created_at')
+
+    for post in posts_list:
+        post.user_liked = post.likes.filter(user=request.user).exists()
+
     paginator = Paginator(posts_list, 10)
     page_number = request.GET.get('page')
     posts = paginator.get_page(page_number)

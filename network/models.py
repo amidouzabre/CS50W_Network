@@ -4,9 +4,9 @@ from django.db import models
 
 class User(AbstractUser):
     bio = models.TextField(blank=True)
-    user_img = models.ImageField(upload_to='user_images/', default="user_images/blank_user_img.png")
+    cover_img = models.ImageField(upload_to='cover_images/', default="cover_images/cover_img.png")
     website = models.URLField(blank=True)
-    profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
+    profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True, default="profile_pictures/profile_img.png")
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
 

@@ -9,7 +9,7 @@
         <!-- Post Composer -->
         <div class="post-box compose" data-user-authenticated="{{ user.username }}">
             <div class="d-flex">
-                <img src="{{  user.user_img.url }}" class="profile-img me-2 mr-2" alt="Profile">
+                <img src="{{  user.profile_picture.url }}" class="profile-img me-2 mr-2" alt="Profile">
                 <div class="flex-grow-1">
                     <form action="{% url 'post_add' %}" method="post">
                         {% csrf_token %}

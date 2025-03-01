@@ -10,15 +10,17 @@
             <div class="position-relative">
                 <!-- Cover Image -->
                 <div class="cover-image">
-                    <img src="https://pbs.twimg.com/profile_banners/452905902/1696948767/600x200" alt="Cover" class="w-100" style="height: 200px; object-fit: cover;">
+                    <img src="{{  profile_user.cover_img.url }}" alt="Cover" class="w-100" style="height: 200px; object-fit: cover;">
                 </div>
                 <!-- Profile Picture -->
                 <div class="profile-picture position-absolute" style="bottom: -50px; left: 20px;">
-                    <img src="{{  profile_user.user_img.url }}" alt="Profile" class="rounded-circle border border-4 border-white" style="width: 120px; height: 120px; object-fit: cover;">
+                    <img src="{{  profile_user.profile_picture.url }}" alt="Profile" class="rounded-circle border border-4 border-white" style="width: 120px; height: 120px; object-fit: cover;">
                 </div>
+
+                {% if user.is_authenticated and user == profile_user %}
                 <!-- Edit Profile Button -->
                 <div class="position-absolute" style="top: 210px; right: 20px;">
-                    {% if user.is_authenticated and user == profile_user %}
+                    
                         <button 
                             class="btn btn-dark" 
                             data-toggle="modal" 
@@ -26,9 +28,22 @@
                         >
                             Edit Profile
                         </button>
-                    {% endif %}
                     
                 </div>
+                {% endif %}
+
+                {% if user.is_authenticated and user != profile_user %}
+                <div class="following-button position-absolute" style="top: 210px; right: 20px;">
+                    
+                        {% if is_following %}
+                            <button  data-user-id="{{ profile_user.id }}" class="btn btn-danger follow">Unfollow</button>
+                        {% else %}
+                            <button  data-user-id="{{ profile_user.id }}" class="btn btn-dark follow">Follow</button>
+                        {% endif %}
+                    
+                </div>
+                {% endif %}
+
             </div>
         </div>
 
@@ -36,6 +51,9 @@
         <div class="profile-info mt-5 p-3">
             <h4 class="mb-0">{{profile_user.full_name}}</h4>
             <span class="text-muted">@{{profile_user.username}}</span>
+            <span class="">
+                <a href="{{profile_user.website}}" target="_blank">{{profile_user.website}}</a>  
+            </span> 
             <div class="bio">
                 <p>
                     {{profile_user.bio}}
@@ -51,15 +69,11 @@
                         <strong class="followers">{{ profile_user.followers.count }}</strong> Followers
                     </div>
                 </div>
-                <div class="following-button">
-                    {% if user.is_authenticated and user != profile_user %}
-                        {% if is_following %}
-                            <button  data-user-id="{{ profile_user.id }}" class="btn btn-danger follow">Unfollow</button>
-                        {% else %}
-                            <button  data-user-id="{{ profile_user.id }}" class="btn btn-dark follow">Follow</button>
-                        {% endif %}
-                    {% endif %}
-                </div>
+
+
+               
+
+
             </div>
 
             
@@ -113,8 +127,12 @@
               <textarea class="form-control" id="bio" name="bio" rows="3">{{ profile_user.bio }}</textarea>
             </div>
             <div class="form-group">
-              <label for="profileImage">Profile Image</label>
-              <input type="file" class="form-control-file" id="profileImage" name="profileImage">
+                <label for="website">Website</label>
+                <input type="text" class="form-control" id="website" name="website" value="{{ profile_user.website }}">
+            </div>
+            <div class="form-group">
+              <label for="profilePicture">Profile Image</label>
+              <input type="file" class="form-control-file" id="profilePicture" name="profilePicture">
             </div>
 
             <div class="form-group">

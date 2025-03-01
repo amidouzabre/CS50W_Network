@@ -136,7 +136,32 @@ def edit_profile(request, username):
     if request.user != profile_user:
         return HttpResponseRedirect(reverse("index"))
 
-    return render(request, "network/edit_profile.html", {'profile_user': profile_user})
+    if request.method == "POST":
+        fisrt_name = request.POST["first_name"]
+        last_name = request.POST["last_name"]
+        bio = request.POST["bio"]
+        website = request.POST["website"]
+        profile_picture = request.FILES.get("profilePicture")
+        cover_image = request.FILES.get("coverImage")   
+
+
+        if fisrt_name != profile_user.first_name:
+            profile_user.first_name = fisrt_name
+        if last_name != profile_user.last_name:
+            profile_user.last_name = last_name
+        if bio != profile_user.bio:
+            profile_user.bio = bio
+        if website != profile_user.website:
+            profile_user.website = website
+        if profile_picture:
+            profile_user.profile_picture = profile_picture
+        if cover_image:
+            profile_user.cover_img = cover_image
+
+        profile_user.save()
+
+    return HttpResponseRedirect(reverse("profile", args=[username]))
+    #return render(request, "network/edit_profile.html", {'profile_user': profile_user})
 
 
 @login_required

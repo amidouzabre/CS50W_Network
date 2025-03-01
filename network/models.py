@@ -5,9 +5,16 @@ from django.db import models
 class User(AbstractUser):
     bio = models.TextField(blank=True)
     user_img = models.ImageField(upload_to='user_images/', default="user_images/blank_user_img.png")
+    website = models.URLField(blank=True)
+    profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
+    first_name = models.CharField(max_length=30, blank=True)
+    last_name = models.CharField(max_length=30, blank=True)
 
     def is_followed_by(self, user):
         return self.followers.filter(follower=user).exists()
+
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
 
 
 class Post(models.Model):
@@ -32,7 +39,7 @@ class Follow(models.Model):
 
 
 
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    website = models.URLField(blank=True)
-    profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
+#class Profile(models.Model):
+#    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+#    website = models.URLField(blank=True)
+#    profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)

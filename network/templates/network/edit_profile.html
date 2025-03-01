@@ -35,8 +35,24 @@
 </div>
 
 <div class="row">
-
-    
+    <div class="col-12">
+        <form action="{% url 'edit_profile' %}" method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="bio" class="form-label">Bio</label>
+                <textarea class="form-control" id="bio" name="bio" rows="3">{{ profile_user.bio }}</textarea>
+            </div>
+            <div class="mb-3">
+                <label for="user_img" class="form-label">User Picture</label>
+                <input class="form-control" type="file" id="user_img" name="user_img">
+            </div>
+            <div class="mb-3">
+                <label for="profile_img" class="form-label">Profile Picture</label>
+                <input class="form-control" type="file" id="profile_img" name="profile_img">
+            </div>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+    </div>
 </div>
 
 

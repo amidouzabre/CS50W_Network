@@ -110,11 +110,14 @@ def profile(request, username):
     profile_user = User.objects.get(username=username)
     posts_list = Post.objects.filter(user=profile_user).order_by('-created_at')
 
+    if request.user.is_authenticated:
+        for post in posts_list:
+            post.user_liked = post.likes.filter(user=request.user).exists()
+
 
     paginator = Paginator(posts_list, 10)
     page_number = request.GET.get('page')
     posts = paginator.get_page(page_number)
-
 
 
     is_following = profile_user.is_followed_by(request.user) if request.user.is_authenticated else False
@@ -130,8 +133,6 @@ def profile(request, username):
 def follow_or_unfollow(request, user_id):
     profile_user = User.objects.get(id=user_id)
     is_following = profile_user.is_followed_by(request.user)
-
-    print(user_id)
     
     if(is_following):
         unfollow = Follow.objects.get(follower=request.user, following=profile_user)    
@@ -152,6 +153,9 @@ def following(request):
     following = Follow.objects.filter(follower=request.user)
     posts_list = Post.objects.filter(user__in=[f.following for f in following]).order_by('-created_at')
 
+    if request.user.is_authenticated:
+        for post in posts_list:
+            post.user_liked = post.likes.filter(user=request.user).exists()
 
     paginator = Paginator(posts_list, 10)
     page_number = request.GET.get('page')

@@ -46,3 +46,7 @@
     height: 150px;
     border-radius: 50%;
 }
+
+.edit-btn {
+    padding: 0 1rem;
+}

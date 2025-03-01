@@ -1,5 +1,5 @@
 // Get editables posts
-posts_editables = document.querySelectorAll('.post-box p[data-post-editable]');
+posts_editables = document.querySelectorAll('.post-box [data-post-editable]');
 
 // Get like
 post_like_btns = document.querySelectorAll('.like');
@@ -10,74 +10,43 @@ post_like_btns = document.querySelectorAll('.like');
 const authenticatedUser = document.querySelector('#user-authenticated');
 
 if(authenticatedUser){
-   
-    // Edit post
+
+
     posts_editables.forEach(post => {
-        post.addEventListener('click', function() {
-            const postId = this.getAttribute('data-post-id');
 
-            const postForm = document.querySelector(`#post-form-${postId}`);
-            postForm.hidden = !postForm.hidden;
-            post.hidden = !post.hidden;
+        
+        const postId = post.getAttribute('data-post-id');
+        const edit_btn = document.querySelector(`#edit-btn-${postId}`); // Remove 'button ' to directly target the button by ID
+        const post_content = document.querySelector(`#post-content-${postId}`);
+        const post_form = document.querySelector(`#post-form-${postId}`);
+        const textarea = post_form.querySelector('textarea');
 
-            if (!postForm.hidden) {
-                const textarea = postForm.querySelector('textarea');
-                textarea.focus();
-
-
-                // Cancel button    
-                if(postForm.oncancel === null) {
-                    postForm.oncancel = function() {
-                        postForm.hidden = true;
-                        post.hidden = false;
-                    }
-                }
-
-                const cancelButton = postForm.querySelector('input[type="button"]');
-                cancelButton.addEventListener('click', postForm.oncancel);
-            }
+        // If click on edit button
+        edit_btn?.addEventListener('click', function() { 
+            showHideForm(post, post_form, post_content, textarea);
         });
 
 
-        const form = document.querySelector(`#post-form-${post.getAttribute('data-post-id')}`);
-        form.addEventListener('submit', function(event) {
+        // Make post content clickable
+        post_content?.addEventListener('click', function() {
+            showHideForm(post, post_form, post_content, textarea);
+        });
+
+
+        // Add event listener that uses the function
+        post_form?.addEventListener('submit', function(event) {
             event.preventDefault();
-            const content = form.querySelector('textarea').value;
-
-
-            fetchJSON(`/post/edit/${post.getAttribute('data-post-id')}`, {
-                method: 'POST',
-                body: JSON.stringify({
-                    content: content
-                }),
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
-                }
-            })
-            .then(result => {
-                if (result) {
-                    post.textContent = content;
-                    post.hidden = false;
-                    form.hidden = true;
-                } else {
-                    alert('An error occurred while updating the post.');
-                }
-            })
-            .catch(error => {
-                console.log(error);
-                return null;
-            }
-            );
-
+            updatePost(post_form, post);
         });
+    
     });
-
+   
+   
 
     // Like or Dislike
     
     post_like_btns.forEach(btn => {
-        btn.addEventListener('click', function (event){
+        btn?.addEventListener('click', function (event){
             event.preventDefault;
             const postId = this.getAttribute('data-post-id');
 
@@ -108,7 +77,7 @@ if(authenticatedUser){
 
     // Follow or Unfollow
     const followBtn = document.querySelector('.follow');
-    followBtn.addEventListener('click', function(event){
+    followBtn?.addEventListener('click', function(event){
         event.preventDefault();
         const userId = this.getAttribute('data-user-id');
 
@@ -138,15 +107,9 @@ if(authenticatedUser){
             console.log(error);
             return null
         });
-        
-
-
     });
-
-
-
-
 };
+
 
 /**
  * Fecth JSON
@@ -164,4 +127,60 @@ async function fetchJSON(url, options = {}) {
     });
 }
 
+
+// Define the update post function
+async function updatePost(form, post) {
+    const content = form.querySelector('textarea').value;
+    try {
+    const result = await fetchJSON(`/post/edit/${post.getAttribute('data-post-id')}`, {
+        method: 'POST',
+        body: JSON.stringify({ content }),
+        headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
+        }
+    });
+
+    if (result) {
+        post.textContent = content;
+        post.hidden = false;
+        form.hidden = true;
+    } else {
+        alert('An error occurred while updating the post.');
+    }
+    } catch (error) {
+    console.log(error);
+    return null;
+    }
+}
+
+
+/**
+ * Show or Hide form
+ * @param {HTMLElement} post 
+ * @param {HTMLElement} form 
+ * @param {HTMLElement} content 
+ * @param {HTMLElement} textarea 
+ */
+function showHideForm(post, form, content, textarea) {
+    form.hidden = !form.hidden;
+    content.hidden = !content.hidden;
+    if (!form.hidden) {
+        textarea.focus();
+
+        // Cancel button    
+        if (form.oncancel === null) {
+            form.oncancel = function() {
+                form.hidden = true;
+                post.hidden = false;
+            }
+        }
+
+        const cancelButton = form.querySelector('input[type="button"]');
+        cancelButton.addEventListener('click', form.oncancel);
+    } else {
+        form.hidden = true;
+        post.hidden = false
+    }
+}
 

@@ -130,6 +130,12 @@ def profile(request, username):
 
 
 @login_required
+def edit_profile(request, username):
+    profile_user = User.objects.get(username=username)
+    return render(request, "network/edit_profile.html", {'profile_user': profile_user})
+
+
+@login_required
 def follow_or_unfollow(request, user_id):
     profile_user = User.objects.get(id=user_id)
     is_following = profile_user.is_followed_by(request.user)

@@ -132,6 +132,10 @@ def profile(request, username):
 @login_required
 def edit_profile(request, username):
     profile_user = User.objects.get(username=username)
+
+    if request.user != profile_user:
+        return HttpResponseRedirect(reverse("index"))
+
     return render(request, "network/edit_profile.html", {'profile_user': profile_user})
 
 

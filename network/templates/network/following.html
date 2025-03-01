@@ -1,30 +1,9 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
-        {% if user.is_authenticated %}
-        <!-- Post Composer -->
-        <div class="post-box compose">
-            <div class="d-flex">
-                <img src="{{  user.profile_picture.url }}" class="profile-img me-2 mr-2" alt="Profile">
-                <div class="flex-grow-1">
-                    <form action="{% url 'post_add' %}" method="post">
-                        {% csrf_token %}
-                        <textarea name="content" class="form-control border-0" placeholder="What's happening?" required></textarea>
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <div>
-                                <i class="far fa-image text-primary"></i>
-                                <i class="far fa-smile text-primary ms-3"></i>
-                            </div>
-                            <input type="submit" class="btn btn-primary rounded-pill" value="Post"/>
-                        </div>
-                    </form>
-                    
-                    
-                </div>
-            </div>
-        </div>
-        {% endif %}
 
+
+        {% include "network/compose_post.html" %}
 
         {% include "network/posts.html" %}
     

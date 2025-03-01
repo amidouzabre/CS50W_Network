@@ -1,0 +1,27 @@
+{% load static %}
+
+{% block compose_post%}
+
+{% if user.is_authenticated %}
+<!-- Post Composer -->
+<div class="post-box compose" data-user-authenticated="{{ user.username }}">
+    <div class="d-flex">
+        <img src="{{  user.profile_picture.url }}" class="profile-img me-2 mr-2" alt="Profile">
+        <div class="flex-grow-1">
+            <form action="{% url 'post_add' %}" method="post">
+                {% csrf_token %}
+                <textarea name="content" rows="4" class="form-control border-0" placeholder="What's happening?" required></textarea>
+                <div class="d-flex justify-content-end align-items-center mt-3">
+                    <input type="submit" class="btn btn-primary rounded-pill" value="Post"/>
+                </div>
+            </form>
+            
+            
+        </div>
+    </div>
+</div>
+{% endif %}
+
+
+{% endblock %}
+

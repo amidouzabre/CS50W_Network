@@ -161,7 +161,6 @@ def edit_profile(request, username):
         profile_user.save()
 
     return HttpResponseRedirect(reverse("profile", args=[username]))
-    #return render(request, "network/edit_profile.html", {'profile_user': profile_user})
 
 
 @login_required
@@ -179,7 +178,6 @@ def follow_or_unfollow(request, user_id):
         action = "followed"
 
     return JsonResponse({"content": action})
-    #return HttpResponseRedirect(reverse("profile", args=[username]))
     
 
 

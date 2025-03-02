@@ -16,7 +16,7 @@ if(authenticatedUser){
 
         
         const postId = post.getAttribute('data-post-id');
-        const edit_btn = document.querySelector(`#edit-btn-${postId}`); // Remove 'button ' to directly target the button by ID
+        const edit_btn = document.querySelector(`#edit-btn-${postId}`);
         const post_content = document.querySelector(`#post-content-${postId}`);
         const post_form = document.querySelector(`#post-form-${postId}`);
         const textarea = post_form.querySelector('textarea');

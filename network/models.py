@@ -37,9 +37,3 @@ class Follow(models.Model):
     following = models.ForeignKey(User, related_name='followers', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
-
-
-#class Profile(models.Model):
-#    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-#    website = models.URLField(blank=True)
-#    profile_picture = models.ImageField(upload_to='profile_pictures/', blank=True, null=True)
